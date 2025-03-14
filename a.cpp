@@ -1,39 +1,44 @@
 #include <bits/stdc++.h>
 using namespace std;
-using ll = long long;
-using vll = vector <ll>;
-using ii = pair <ll, ll>;
-using vii = vector <ii>;
+#define int long long
 
-void tc () {
-    ll n, m;
-    cin >> n >> m;
-    vector <vll> ve(n, vll(m));
-    vll p(n, -16);
-    bool val = true;
-    ll c = 0;
-    for (vll &we : ve) {
-        for (ll &i : we) cin >> i;
-        ll minN = *min_element(we.begin(), we.end());
-        if (minN < n) p[minN] = c++;
-        val &= minN < n;
-        sort(we.begin(), we.end());
-        ll last = we[0]-n;
-        for (ll i : we) {
-            val &= last+n == i;
-            last = i;
+int32_t main (void) {
+    int t;
+    cin>>t;
+    while(t--){
+        int n;
+        cin>>n;
+        int a[n][2];
+        unordered_set<int>xx,yx;
+        for(int i=0;i<n;i++){
+            cin>>a[i][0]>>a[i][1];
+            if(a[i][1] == 1){
+                yx.insert(a[i][0]);
+            }else{
+                xx.insert(a[i][0]);
+            }
         }
+        
+        int count = 0;
+        for(int i=0;i<n;i++){
+           if(a[i][1] == 1 and xx.find(a[i][0]) != xx.end()){
+               count++;
+           }
+        }
+        int ans = 0;
+        for(auto x:yx){
+            if(xx.find(x-1) != xx.end() and xx.find(x+1) != xx.end()){
+                ans++;
+            }
+        }
+        for(auto x:xx){
+            if(yx.find(x-1) != yx.end() and yx.find(x+1) != yx.end()){
+                ans++;
+            }
+        }
+        ans += (count)*(xx.size()-1);
+        ans += count*(yx.size()-1);
+        cout<<ans<<endl;
     }
-    if (!val) {
-        cout << "-1\n";
-        return;
-    }
-    for (ll i : p) cout << i+1 << ' ';
-    cout << '\n';
-}
-
-int main () {
-    cin.tie(nullptr) -> sync_with_stdio(false);
-    ll T; cin >> T; while (T--) { tc(); }
     return 0;
 }
