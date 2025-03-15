@@ -53,8 +53,8 @@ void rangeIncrement(std::vector<int>& diff, int l, int r, int val) {
 // Function to construct the original array from the difference array
 vector<int> constructArray(const std::vector<int>& diff) {
     std::vector<int> arr(diff.size());
-    arr[0] = diff[0];
-    for (size_t i = 1; i < diff.size(); ++i) {
+
+    for (size_t i = 1; i < arr.size(); ++i) {
         arr[i] = arr[i - 1] + diff[i];
     }
     return arr;
@@ -62,22 +62,19 @@ vector<int> constructArray(const std::vector<int>& diff) {
 
 int main() {
     std::vector<int> arr = {10, 5, 20, 40};
-    std::vector<int> diff(arr.size());
-
-    // Construct the difference array
-    diff[0] = arr[0];
-    for (size_t i = 1; i < arr.size(); ++i) {
-        diff[i] = arr[i] - arr[i - 1];
-    }
-
+    std::vector<int> diff(arr.size()+1,0);
     // Apply range increment
     rangeIncrement(diff, 1, 3, 10);
-
+    for(int i=1;i<diff.size();i++){
+        diff[i]+=diff[i-1];
+    }
     // Construct the updated array
-    std::vector<int> updatedArr = constructArray(diff);
+    for (int i = 0; i < arr.size(); ++i) {
+        arr[i] = arr[i] + diff[i];
+    }
 
     // Print the updated array
-    for (int val : updatedArr) {
+    for (int val : arr) {
         std::cout << val << " ";
     }
 
